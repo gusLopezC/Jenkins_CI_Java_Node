@@ -5,7 +5,6 @@ pipeline {
             stage ('install') {
                 steps {
                     dir("build_node"){
-                      sh "apt install npm -y"
                       sh "npm install"
                     } 
                 }
