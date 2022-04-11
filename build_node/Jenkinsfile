@@ -1,7 +1,7 @@
 pipeline {
      agent any
         tools {
-        nodejs 'NodeJS_17.9.0'
+        nodejs 'nodejs'
         }
         stages {
             stage ('install') {
