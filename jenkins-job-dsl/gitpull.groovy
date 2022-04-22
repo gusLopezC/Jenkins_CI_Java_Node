@@ -25,7 +25,7 @@ job('Portafolio_backend_test') {
 job('launch-web') {
     description('This job will deploy our website on top of K8s')
     triggers {
-        upstream('Portafolio_backend_test', 'SUCCESS')
+        upstream('git-pull', 'SUCCESS')
     }
     steps {
         shell('''
@@ -45,5 +45,75 @@ job('launch-web') {
 
           kubectl create - f / home / ec2 - user / master / pvc.yml kubectl create - f / home / ec2 - user / master / deploy.yml sleep 10 kubectl expose deploy myweb--type = LoadBalancer--port = 80 sleep 10 kubectl get svc '
           ''')
+    }
+}
+
+job('test-web') {
+    description('This job will test our website on top of K8s')
+    triggers {
+        upstream('launch-web', 'SUCCESS')
+    }
+    steps {
+        shell('''
+ssh ec2-user@172.31.74.187 '
+status=$(sudo curl -o /dev/null -sw "%{http_code}" https://myweb-dheeth.cloud.okteto.net)
+
+if [[ $status == 200 ]]
+then
+echo "Website is up and running"
+else
+echo "Something Went Wrong"
+exit 1
+fi
+'
+''')
+    }
+}
+
+job('test-web') {
+    description('This job will test our website on top of K8s')
+    triggers {
+        upstream('launch-web', 'SUCCESS')
+    }
+    steps {
+        shell('''
+ssh ec2-user@172.31.74.187 '
+status=$(sudo curl -o /dev/null -sw "%{http_code}" https://myweb-dheeth.cloud.okteto.net)
+
+if [[ $status == 200 ]]
+then
+echo "Website is up and running"
+else
+echo "Something Went Wrong"
+exit 1
+fi
+'
+''')
+    }
+}
+
+job('notify') {
+    description('This job will deploy our website on top of K8s')
+    triggers {
+        upstream('test-web', 'FAILURE')
+        scm('* * * * *')
+    }
+    steps {
+        shell('''
+ssh ec2-user@172.31.74.187 '
+status=$(curl -s http://admin:12%40pawaNji@3.236.101.249/job/test-web/lastBuild/api/xml | grep SUCCESS | wc -l)
+
+if [[ $status == 1 ]]
+then
+echo "Website is up and running"
+else
+echo "Something went wrong, Sending email to developer"
+exit 1
+fi
+'
+''')
+    }
+    publishers {
+        mailer('pawanmehta488@gmail.com', false, false)
     }
 }
