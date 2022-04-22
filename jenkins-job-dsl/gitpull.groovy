@@ -9,9 +9,7 @@ pipelineJob('job-dsl-plugin') {
           branch('*/main')
         }
       }
-      triggers{
-        githubPush()
-      }
+      
       lightweight()
     }
       steps{
