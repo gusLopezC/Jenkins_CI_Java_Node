@@ -55,8 +55,7 @@ job('Portafolio_backend_test') {
               upstream('git-pull', 'SUCCESS')
             }
             steps {
-              shell(''
-                '
+              shell('''
                 ssh ec2 - user @172 .31 .74 .187 '
                 html_files = $(ls / home / ec2 - user / master | grep html | wc - l) php_files = $(ls / home / ec2 - user / master | grep php | wc - l)
 
@@ -72,8 +71,7 @@ job('Portafolio_backend_test') {
                 sudo docker push dheeth / kube - web
 
                 kubectl create - f / home / ec2 - user / master / pvc.yml kubectl create - f / home / ec2 - user / master / deploy.yml sleep 10 kubectl expose deploy myweb--type = LoadBalancer--port = 80 sleep 10 kubectl get svc '
-                ''
-                ')
+                ''')
               }
             }
           }
