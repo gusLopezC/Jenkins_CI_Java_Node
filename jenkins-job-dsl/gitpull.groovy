@@ -1,14 +1,13 @@
-job('job-dsl-plugin') {
-  scm {
-    git {
-      remote {
-        url('https://github.com/gusLopezC/Jenkins_kube-web.git')
-      }
-      branch('*/main')
+job('Portafolio_backend_test'){
+    description('This job run a test in Postman with Newman')
+    scm {
+        git('https://github.com/manfer993/test-postman-newman.git','*/master')
     }
-  }
-  steps {
-    shell('npm install')
-    shell('npm run test')
-  }
+    wrappers {
+        nodejs('nodeJS_10.15.3')
+    }
+    steps {
+        shell('npm install')
+        shell('npm run test')
+    }
 }
