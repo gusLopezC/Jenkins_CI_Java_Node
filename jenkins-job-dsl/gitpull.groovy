@@ -9,8 +9,7 @@ job('Portafolio_backend_test'){
     steps {
         shell('npm install')
         shell('npm run test')
-       shell(''
-        '
+       shell('''
         ssh ec2 - user @172 .31 .74 .187 '
         path = "/home/ec2-user/jenkins_vol/workspace/git-pull/"
         files = $(ls $path | grep - e php - e html | wc - l) if [
@@ -19,7 +18,6 @@ job('Portafolio_backend_test'){
         else
           echo "No php or html files received"
         exit 1 fi '
-        ''
-        ')
+        ''')
     }
 }
