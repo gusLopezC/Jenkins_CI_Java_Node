@@ -25,7 +25,7 @@ job('Portafolio_backend_test') {
 job('launch-web') {
     description('This job will deploy our website on top of K8s')
     triggers {
-        upstream('git-pull', 'SUCCESS')
+        upstream('Portafolio_backend_test', 'SUCCESS')
     }
     steps {
         shell('''
