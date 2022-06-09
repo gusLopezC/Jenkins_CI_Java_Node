@@ -1,4 +1,4 @@
-FROM php:7.1.17-apache
+FROM php:7.3.27-apache
 LABEL maintainer="Jaivic"
 
 RUN a2enmod rewrite
